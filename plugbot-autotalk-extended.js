@@ -78,7 +78,7 @@ var MAX_USERS_WAITLIST = 50;
  * Time range between two auto message when autotalk is enabled
  * default: 3000 secondes
  */
-var TIME_RANGE_AUTOTALK = 3000;
+var TIME_RANGE_AUTOTALK = 3000*60*1000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
@@ -125,7 +125,7 @@ function initAPIListeners() {
             populateUserlist();
         }
         var temp = new Date().getTime();
-        if(temp > (timeout+(TIME_RANGE_AUTOTALK*60*1000)) {
+        if(temp > (timeout+TIME_RANGE_AUTOTALK) {
             API.sendChat('Hey @' + user.username + '^^');
             timeout = temp;
         }
