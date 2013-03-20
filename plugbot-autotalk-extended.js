@@ -125,7 +125,7 @@ function initAPIListeners() {
             populateUserlist();
         }
         var temp = new Date().getTime();
-        if(temp > (timeout+TIME_RANGE_AUTOTALK)) {
+        if(temp > (timeout+(TIME_RANGE_AUTOTALK*60*1000)) {
             API.sendChat('Welcome @' + user.username);
             timeout = temp;
         }
