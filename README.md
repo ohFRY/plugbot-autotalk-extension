@@ -19,7 +19,7 @@ NB: Most of the code has been written by Conner Davis. I only have added the AUT
 
 ### Features List by Fry ###
 
-+ Auto-talk  :  Automatically greets the latest user to come every 3000 seconds
++ Auto-talk  :  Automatically greets the latest user to come every 3000 seconds in order to not been kicked out of the room while inactive.
 
 
 
