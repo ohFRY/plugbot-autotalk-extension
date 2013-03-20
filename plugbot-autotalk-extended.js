@@ -126,7 +126,7 @@ function initAPIListeners() {
         }
         var temp = new Date().getTime();
         if(temp > (timeout+(TIME_RANGE_AUTOTALK*60*1000)) {
-            API.sendChat('Welcome @' + user.username);
+            API.sendChat('Hey @' + user.username + '^^');
             timeout = temp;
         }
     });
