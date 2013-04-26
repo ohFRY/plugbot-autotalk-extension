@@ -59,6 +59,10 @@ var userList;
  */
 var autotalk; 
 var timeout = new Date().getTime();
+/*
+ * Whether or not the user has enabled the autoskip.
+ */
+var autoskip;
 
 /*
  * Cookie constants
@@ -68,6 +72,7 @@ var COOKIE_QUEUE = 'autoqueue';
 var COOKIE_HIDE_VIDEO = 'hidevideo';
 var COOKIE_USERLIST = 'userlist';
 var COOKIE_TALK = 'autotalk';
+var COOKIE_SKIP = 'autoskip';
 
 /*
  * Maximum amount of people that can be in the waitlist.
@@ -79,6 +84,12 @@ var MAX_USERS_WAITLIST = 50;
  * default: 3000 secondes
  */
 var TIME_RANGE_AUTOTALK = 3000*60*1000;
+
+/*
+ * Time before skipping the track when autoskip is enabled
+ * default: 20 seconds
+ */
+var TIME_RANGE_AUTOSKIP = 20000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
@@ -124,11 +135,14 @@ function initAPIListeners() {
         if (userList) {
             populateUserlist();
         }
-        var temp = new Date().getTime();
-        if(temp > (timeout+TIME_RANGE_AUTOTALK)) {
-            API.sendChat('Hey @' + user.username);
+        if (autotalk){
+            var temp = new Date().getTime();
+            if(temp > (timeout+TIME_RANGE_AUTOTALK)) {
+                API.sendChat('Hey @' + user.username);
             timeout = temp;
+            }
         }
+
     });
 
     /*
@@ -141,6 +155,11 @@ function initAPIListeners() {
     });
 
     API.addEventListener(API.CHAT, checkCustomUsernames);
+
+    /*
+     * This listens in for whenever a DJ skips a track.
+     */
+    API.addEventListener(API.USER_SKIP, skipTrack);
 }
 
 /**
@@ -182,8 +201,9 @@ function displayUI() {
     var cHideVideo = hideVideo ? "#3FFF00" : "#ED1C24";
     var cUserList = userList ? "#3FFF00" : "#ED1C24";
     var cTalk = autotalk ? "#3FFF00" : "#ED1C24";
+    var cSkip = autoskip ? "#3FFF00" : "#ED1C24";
     $('#plugbot-ui').append(
-        '<p id="plugbot-btn-woot" style="color:' + cWoot + '">auto-woot</p><p id="plugbot-btn-queue" style="color:' + cQueue + '">auto-queue</p><p id="plugbot-btn-hidevideo" style="color:' + cHideVideo + '">hide video</p><p id="plugbot-btn-autotalk" style="color:' + cTalk + '">auto-talk</p><p id="plugbot-btn-userlist" style="color:' + cUserList + '">userlist</p><h2 title="This makes it so you can give a user in the room a special colour when they chat!">Custom Username FX: <br /><br id="space" /><span onclick="promptCustomUsername()" style="cursor:pointer">+ add new</span></h2>');
+        '<p id="plugbot-btn-woot" style="color:' + cWoot + '">auto-woot</p><p id="plugbot-btn-queue" style="color:' + cQueue + '">auto-queue</p><p id="plugbot-btn-hidevideo" style="color:' + cHideVideo + '">hide video</p><p id="plugbot-btn-autotalk" style="color:' + cTalk + '">auto-talk</p><p id="plugbot-btn-autoskip" style="color:' + cSkip + '">auto-skip</p><p id="plugbot-btn-userlist" style="color:' + cUserList + '">userlist</p><h2 title="This makes it so you can give a user in the room a special colour when they chat!">Custom Username FX: <br /><br id="space" /><span onclick="promptCustomUsername()" style="cursor:pointer">+ add new</span></h2>');
 }
 
 /**
@@ -267,15 +287,27 @@ function initUIListeners() {
     });
 
     /*
-     * Toggle auto-woot.
+     * Toggle auto-talk.
      */
     $("#plugbot-btn-autotalk").on("click", function () {
         autotalk = !autotalk;
         $(this).css("color", autotalk ? "#3FFF00" : "#ED1C24");
         if (autotalk) {
-            $("#button-vote-positive").click();
+
         }
         jaaulde.utils.cookies.set(COOKIE_TALK, autotalk);
+    });
+
+    /*
+     * Toggle auto-skip.
+     */
+    $("#plugbot-btn-autoskip").on("click", function () {
+        autoskip = !autoskip;
+        $(this).css("color", autoskip ? "#3FFF00" : "#ED1C24");
+        if (autoskip) {
+            skipTrack();
+        }
+        jaaulde.utils.cookies.set(COOKIE_TALK, autoskip);
     });
 }
 
@@ -307,6 +339,7 @@ function djAdvanced(obj) {
     if (userList) {
         populateUserlist();
     }
+
 }
 
 /**
@@ -641,6 +674,12 @@ function readCookies() {
     value = jaaulde.utils.cookies.get(COOKIE_TALK);
     autotalk = value != null ? value : true;
 
+    /*
+     * Read autotalk cookie (true by default)
+     */
+    value = jaaulde.utils.cookies.get(COOKIE_SKIP);
+    autoskip = value != null ? value : true;
+
     onCookiesLoaded();
 }
 
@@ -706,6 +745,12 @@ function onCookiesLoaded() {
     initAPIListeners();
     displayUI();
     initUIListeners();
+}
+
+function skipTrack(){
+    if (autoskip){
+        setTimeout($("#button-vote-positive").click(), TIME_RANGE_AUTOSKIP);
+    }
 }
 
 /*
