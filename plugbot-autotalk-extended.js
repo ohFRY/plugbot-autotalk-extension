@@ -89,7 +89,7 @@ var TIME_RANGE_AUTOTALK = 3000*60*1000;
  * Time before skipping the track when autoskip is enabled
  * default: 15 seconds
  */
-var TIME_RANGE_AUTOSKIP = 15000;
+var TIME_RANGE_AUTOSKIP = 30000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
