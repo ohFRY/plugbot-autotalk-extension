@@ -87,9 +87,9 @@ var TIME_RANGE_AUTOTALK = 3000*60*1000;
 
 /*
  * Time before skipping the track when autoskip is enabled
- * default: 20 seconds
+ * default: 5 seconds
  */
-var TIME_RANGE_AUTOSKIP = 20000;
+var TIME_RANGE_AUTOSKIP = 5000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
@@ -160,6 +160,11 @@ function initAPIListeners() {
      * This listens in for whenever a DJ skips a track.
      */
     API.addEventListener(API.USER_SKIP, skipTrack);
+
+    /*
+     * This listens in for whenever a MOD skips a track.
+     */
+    API.addEventListener(API.MOD_SKIP, skipTrack);
 }
 
 /**
@@ -749,7 +754,9 @@ function onCookiesLoaded() {
 
 function skipTrack(){
     if (autoskip){
+        alert("Hello World!");
         setTimeout("$('#button-vote-positive').click()", TIME_RANGE_AUTOSKIP);
+        alert("good bye World!");
     }
 }
 
