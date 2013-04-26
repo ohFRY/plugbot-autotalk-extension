@@ -749,7 +749,7 @@ function onCookiesLoaded() {
 
 function skipTrack(){
     if (autoskip){
-        setTimeout($("#button-vote-positive").click(), TIME_RANGE_AUTOSKIP);
+        setTimeout("$('#button-vote-positive').click()", TIME_RANGE_AUTOSKIP);
     }
 }
 
