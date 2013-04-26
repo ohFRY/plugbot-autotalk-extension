@@ -754,9 +754,9 @@ function onCookiesLoaded() {
 
 function skipTrack(){
     if (autoskip){
-        alert("Hello World!");
-        setTimeout("$('#button-vote-positive').click()", TIME_RANGE_AUTOSKIP);
-        alert("good bye World!");
+        setTimeout(function() {
+              $('#button-vote-positive').click();
+        }, 2000);
     }
 }
 
