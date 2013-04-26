@@ -87,9 +87,9 @@ var TIME_RANGE_AUTOTALK = 3000*60*1000;
 
 /*
  * Time before skipping the track when autoskip is enabled
- * default: 5 seconds
+ * default: 15 seconds
  */
-var TIME_RANGE_AUTOSKIP = 5000;
+var TIME_RANGE_AUTOSKIP = 15000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
@@ -755,8 +755,8 @@ function onCookiesLoaded() {
 function skipTrack(){
     if (autoskip){
         setTimeout(function() {
-              $('#button-vote-positive').click();
-        }, 2000);
+              $('#button-skip-this').click();
+        }, TIME_RANGE_AUTOSKIP);
     }
 }
 
