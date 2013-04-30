@@ -762,7 +762,7 @@ function skipTrack(){
     if (autoskip){
         setTimeout(function() {
               $('#button-skip-this').click();
-        }, ( TIME_RANGE_AUTOSKIP + (Math.floor((Math.random()*TIME_OFFSET_AUTOSKIP)+1)-(TIME_OFFSET_AUTOSKIP/2)) );
+        },  TIME_RANGE_AUTOSKIP + (Math.floor((Math.random()*TIME_OFFSET_AUTOSKIP)+1)-(TIME_OFFSET_AUTOSKIP/2)) );
     }
 }
 
