@@ -87,9 +87,15 @@ var TIME_RANGE_AUTOTALK = 3000*60*1000;
 
 /*
  * Time before skipping the track when autoskip is enabled
- * default: 15 seconds
+ * default: 30 seconds
  */
 var TIME_RANGE_AUTOSKIP = 30000;
+
+/*
+ * Random number of seconds when autoskip is enabled
+ * default: 20 seconds / 2
+ */
+var TIME_OFFSET_AUTOSKIP = 20000;
 
 /*
  * Whenever a user chooses to apply custom username FX to a
@@ -756,7 +762,7 @@ function skipTrack(){
     if (autoskip){
         setTimeout(function() {
               $('#button-skip-this').click();
-        }, TIME_RANGE_AUTOSKIP);
+        }, ( TIME_RANGE_AUTOSKIP + (Math.floor((Math.random()*TIME_OFFSET_AUTOSKIP)+1)-(TIME_OFFSET_AUTOSKIP/2)) );
     }
 }
 
